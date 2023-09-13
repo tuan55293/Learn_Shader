@@ -5,9 +5,8 @@ Shader "Unlit/WaveCenter"
         _MainTex ("Texture", 2D) = "white" {}
         _Freq ("Freq",float) = 0
         _High ("High",float) = 0
-        _PointCenter ("PointCenter",Range(0,10)) = 0
-        _PointCenter2 ("PointCenter2",Vector) = (0,0,0,0)
-        _number("num",float) = 0
+        _numberOfArray("num",int) = 0
+        _number("number",float) = 0
     }
     SubShader
     {
@@ -19,25 +18,19 @@ Shader "Unlit/WaveCenter"
             ZWrite On
             Blend One One
             CGPROGRAM
-
-
-
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
-
             #include "UnityCG.cginc"
             #define TAU 6.312850
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float _Freq;
             float _High;
-            float _PointCenter;
+            float3 _PointCenter;
             float3 _PointCenter2;
+            float _numberOfArray;
             float _number;
-
-
+            float4  myCenter[1000];
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -49,7 +42,6 @@ Shader "Unlit/WaveCenter"
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
             };
-
 
             //Perlin noise
 
@@ -87,12 +79,7 @@ Shader "Unlit/WaveCenter"
     
                     return lerp(n0.x, lerp(n0.y, n0.z, fade.z), 0.5) + 0.5;
                 }
-
-
             //End perlin noise
-
-
-
 
             //Voronoise
 
@@ -129,16 +116,9 @@ Shader "Unlit/WaveCenter"
 
             //End voronoise
 
-
-
-
-
-
-
-
-            float UVCenter(float2 uv){
+            float UVCenter(float2 uv, float3 pivot){
                 
-                float2 reuv = float2(_PointCenter2.x/40,_PointCenter2.z/40);
+                float2 reuv = float2(pivot.x/40,pivot.z/40);
                 
                 //float2 remap = reuv * 2 - 1;
                 
@@ -146,13 +126,18 @@ Shader "Unlit/WaveCenter"
                 float center = cos((lDis - _Time.y * _Freq *0.1)*100) * 0.5 + 0.5;
                 center *= saturate(0.2 -lDis);
                 return center;
-
             }
 
             v2f vert (appdata v)
             {
                 v2f o;
-                v.vertex.y = UVCenter(v.uv)*_High;
+                float totalwave = 0;
+                for(int i = 0; i < _numberOfArray;i++)
+                {
+                    totalwave += UVCenter(v.uv,myCenter[i]);
+                }
+                v.vertex.y = totalwave * _High;
+                 //v.vertex.y = UVCenter(v.uv,_PointCenter)*_High;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
@@ -171,5 +156,5 @@ Shader "Unlit/WaveCenter"
             }
             ENDCG
         }
-    }
+    }    
 }

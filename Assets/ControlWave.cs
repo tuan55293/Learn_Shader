@@ -1,19 +1,38 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ControlWave : MonoBehaviour
 {
     public Material waveMaterial;
-    public Transform wave;
+    public Transform Sea;
+    public List<Transform> wave;
+    public List<Vector4> copywave;
     void Start()
     {
-        
+        for (int i = 0; i < wave.Count; i++)
+        {
+            Vector4 a = new Vector4(wave[i].position.x, 0, wave[i].position.z, 0);
+            copywave.Add(a);
+        }
+
     }
 
-    // Update is called once per frame
     void Update()
     {
-        waveMaterial.SetVector("_PointCenter2",new Vector4(transform.position.x / wave.transform.localScale.x - wave.transform.position.x,0,transform.position.z/ wave.transform.localScale.z - wave.transform.position.z,0));
+        waveMaterial.SetInt("_numberOfArray", wave.Count);
+        copywave.Clear();
+        for (int i = 0; i < wave.Count; i++)
+        {
+            //Chia  tỉ lệ theo scale đoạn này đang bị lỗi nếu mặt biển không nằm tại 0,0,0 của thế giới !
+            Vector4 a = new Vector4(wave[i].position.x / Sea.transform.localScale.x - Sea.transform.position.x, 0, wave[i].position.z / Sea.transform.localScale.z - Sea.transform.position.z, 0);
+            copywave.Add(a);
+        }
+        for (int i = 0; i < wave.Count; i++)
+        {
+            waveMaterial.SetVectorArray("myCenter", copywave);
+        }
+
     }
 }
