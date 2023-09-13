@@ -1,7 +1,13 @@
+﻿
+// Code xử lý tạo sóng mặt nước kiểu từ tâm lan rộng ra với kích thước khác nhau.
+// Ngoài ra có thể di chuyển tâm của sóng đi khắp nới trên bề mặt, và có thể có nhiều tâm sóng trên cùng một mặt nước.
+
+
 Shader "Unlit/WaveCenter"
 {
     Properties
     {
+        // Các biến.
         _MainTex ("Texture", 2D) = "white" {}
         _Freq ("Freq",float) = 0
         _High ("High",float) = 0
@@ -116,6 +122,8 @@ Shader "Unlit/WaveCenter"
 
             //End voronoise
 
+
+            // Xử lý tạo ra vector sóng  từ tâm
             float UVCenter(float2 uv, float3 pivot){
                 
                 float2 reuv = float2(pivot.x/40,pivot.z/40);
@@ -131,6 +139,8 @@ Shader "Unlit/WaveCenter"
             v2f vert (appdata v)
             {
                 v2f o;
+
+                // xử lý tạo sóng bằng cách di chuyển các đỉnh mesh theo chiều y với thông số vector sóng đã tính,và áp dụng với nhiều tâm sóng.
                 float totalwave = 0;
                 for(int i = 0; i < _numberOfArray;i++)
                 {
@@ -147,6 +157,8 @@ Shader "Unlit/WaveCenter"
             float4 frag (v2f i) : SV_Target
             {
                 // sample the texture
+
+                //Hiển thị texture dưới dạng có voronoise và hiệu ứng blend.
                 fixed4 col = tex2D(_MainTex, i.uv);
                 float outt;
                 float cell;

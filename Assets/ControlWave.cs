@@ -29,10 +29,9 @@ public class ControlWave : MonoBehaviour
             Vector4 a = new Vector4(wave[i].position.x / Sea.transform.localScale.x - Sea.transform.position.x, 0, wave[i].position.z / Sea.transform.localScale.z - Sea.transform.position.z, 0);
             copywave.Add(a);
         }
-        for (int i = 0; i < wave.Count; i++)
-        {
-            waveMaterial.SetVectorArray("myCenter", copywave);
-        }
+
+        // Truyền mảng vector vào trong HLSL
+        waveMaterial.SetVectorArray("myCenter", copywave);
 
     }
 }
