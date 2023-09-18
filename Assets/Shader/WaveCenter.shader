@@ -37,6 +37,7 @@ Shader "Unlit/WaveCenter"
             float _numberOfArray;
             float _number;
             float4  myCenter[1000];
+            RWStructuredBuffer<float4> waveData;
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -144,7 +145,7 @@ Shader "Unlit/WaveCenter"
                 float totalwave = 0;
                 for(int i = 0; i < _numberOfArray;i++)
                 {
-                    totalwave += UVCenter(v.uv,myCenter[i]);
+                    totalwave += UVCenter(v.uv,waveData[i]);
                 }
                 v.vertex.y = totalwave * _High;
                  //v.vertex.y = UVCenter(v.uv,_PointCenter)*_High;
