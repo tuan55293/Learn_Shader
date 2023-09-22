@@ -37,7 +37,7 @@ Shader "Unlit/WaveCenter"
             float _numberOfArray;
             float _number;
             float4  myCenter[1000];
-            RWStructuredBuffer<float4> waveData;
+            //RWStructuredBuffer<float4> waveData;
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -145,11 +145,12 @@ Shader "Unlit/WaveCenter"
                 float totalwave = 0;
                 for(int i = 0; i < _numberOfArray;i++)
                 {
-                    totalwave += UVCenter(v.uv,waveData[i]);
+                    totalwave += UVCenter(v.uv,myCenter[i]);
                 }
+                                o.vertex = UnityObjectToClipPos(v.vertex);
                 v.vertex.y = totalwave * _High;
                  //v.vertex.y = UVCenter(v.uv,_PointCenter)*_High;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
                 return o;
@@ -163,7 +164,7 @@ Shader "Unlit/WaveCenter"
                 fixed4 col = tex2D(_MainTex, i.uv);
                 float outt;
                 float cell;
-                Unity_Voronoi_float(i.uv,3 * _Time.y,4,outt,cell);
+                Unity_Voronoi_float(i.uv,3 * _Time.y,10,outt,cell);
                 return  lerp(col, pow(outt,_number), pow(outt,_number));
                 //UVCenter(i.uv);
             }
