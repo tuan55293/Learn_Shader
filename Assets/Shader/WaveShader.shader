@@ -5,7 +5,7 @@ Shader "Custom/WaveShader" {
             _Color1("Color1",color) = (1,1,1,1)
             //_StartRange("Start Range",Range(0,1)) = 0
             //_EndRange("End Range",Range(0,1)) = 1
-            //_WaveHigh("WaveHigh",Range(0,1)) = 1
+            _WaveHigh("WaveHigh",Range(0,1)) = 1
             _Freq("_Freq",Range(0,1)) = 1
             _MainTex("MainTex",2D) = "white"{}
             _RockTex("RockText",2D) = "white"{}
@@ -93,13 +93,14 @@ Shader "Custom/WaveShader" {
                 }
                  // Hết khu vực hàm có tác dụng trả về giá trị làm nhiễu.
 
-                float UVCenter(float2 uv, float3 noise = (1,1,1))
+                float UVCenter(float2 uv)
                 {
-                    //float2 wavecenter = uv * 2 -1;
-                    float lengthvector = length(uv);
+                    float2 wavecenter = uv * 2 -1;
+                    float lengthvector = length(wavecenter);
 
                     float wave = cos((lengthvector  - _Time.y * _Freq   ) * TAU * 5)  * 0.5 + 0.5;
 
+                    wave *= 1-lengthvector;
                     return wave;
                 }
                 v2f vert(appdata v) {
@@ -110,7 +111,7 @@ Shader "Custom/WaveShader" {
 
                     //float WaveX = cos((v.uv.y - _Time.y*0.1f)*_Freq);
                     //float WaveY = cos((v.uv.x  * perlinNoise3D(v.uv *10) - _Time.y*0.1f)*_Freq);
-                    //v.vertex.y = UVCenter(v.uv,v.uv) * _WaveHigh;
+                    v.vertex.y = UVCenter(v.uv) * _WaveHigh;
                     o.vertex = UnityObjectToClipPos(v.vertex);
                     o.normal = v.normal;// UnityObjectToWorldNormal(v.normal);
 

@@ -147,8 +147,9 @@ Shader "Unlit/WaveCenter"
                 {
                     totalwave += UVCenter(v.uv,myCenter[i]);
                 }
-                                o.vertex = UnityObjectToClipPos(v.vertex);
                 v.vertex.y = totalwave * _High;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+
                  //v.vertex.y = UVCenter(v.uv,_PointCenter)*_High;
 
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
@@ -164,7 +165,7 @@ Shader "Unlit/WaveCenter"
                 fixed4 col = tex2D(_MainTex, i.uv);
                 float outt;
                 float cell;
-                Unity_Voronoi_float(i.uv,3 * _Time.y,10,outt,cell);
+                Unity_Voronoi_float(i.uv,3 * _Time.y,5,outt,cell);
                 return  lerp(col, pow(outt,_number), pow(outt,_number));
                 //UVCenter(i.uv);
             }
