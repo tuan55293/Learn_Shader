@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MaterialSample
   m_Shader: {fileID: 4800000, guid: 4d156aff69ec2c5499be3c0754c4dc65, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _SELECTEDCOLOR_RED
@@ -18,6 +20,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -42,7 +45,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: edf8be9b225761e438c9580031222874, type: 3}
+        m_Texture: {fileID: 2800000, guid: 26836abc3e81c104b8238f215d5b5598, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -71,25 +74,25 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Freq: 1.3
+    - _Freq: 0.229
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _High: 7.44
+    - _High: 2.8
     - _Metallic: 0
     - _Mode: 0
     - _Num: 0.434
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _PointCenter: 0
-    - _Range1: 0.018
-    - _Range2: 0.603
+    - _Range1: 0
+    - _Range2: 1
     - _SelectedColor: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _WaveHigh: 1
+    - _WaveHigh: 0
     - _ZWrite: 1
     - _number: 4
     - _numberOfArray: 3
