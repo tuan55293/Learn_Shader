@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MaterialSample
-  m_Shader: {fileID: 4800000, guid: 4d156aff69ec2c5499be3c0754c4dc65, type: 3}
+  m_Shader: {fileID: 4800000, guid: f1591faf672ad1e4a84f278053a50a3b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -45,6 +45,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 33904b54727290247904f5c8c346e209, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex1:
         m_Texture: {fileID: 2800000, guid: f9b5ee0b137d847458536b7153bdd669, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -104,4 +108,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _PointCenter: {r: 14.03, g: -6.2, b: 23.4, a: 0}
     - _PointCenter2: {r: 17.24, g: 0, b: 14.7, a: 0}
+    - inminmax: {r: 0, g: 1, b: 0, a: 0}
+    - inputremap: {r: 1, g: 1, b: 1, a: 1}
+    - outminmax: {r: 0, g: 0.16, b: 0, a: 0}
   m_BuildTextureStacks: []

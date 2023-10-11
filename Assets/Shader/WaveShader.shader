@@ -27,7 +27,7 @@ Shader "Custom/WaveShader" {
 
                #pragma vertex vert
                #pragma fragment frag
-                #include "UnityCG.cginc"
+               #include "UnityCG.cginc"
 
                 #define TAU 6.312850
 
