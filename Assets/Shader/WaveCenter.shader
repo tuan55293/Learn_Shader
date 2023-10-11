@@ -153,7 +153,7 @@ Shader "Unlit/WaveCenter"
                  //v.vertex.y = UVCenter(v.uv,_PointCenter)*_High;
 
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-
+                
                 return o;
             }
 
