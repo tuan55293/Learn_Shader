@@ -49,7 +49,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex1:
-        m_Texture: {fileID: 2800000, guid: f9b5ee0b137d847458536b7153bdd669, type: 3}
+        m_Texture: {fileID: 2800000, guid: 72e3bd13fe2ed9f42a8ef611f43fa5d6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 187.87, y: 15.05}
+    - _MainTexx:
+        m_Texture: {fileID: 2800000, guid: 33904b54727290247904f5c8c346e209, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -109,6 +113,6 @@ Material:
     - _PointCenter: {r: 14.03, g: -6.2, b: 23.4, a: 0}
     - _PointCenter2: {r: 17.24, g: 0, b: 14.7, a: 0}
     - inminmax: {r: 0, g: 1, b: 0, a: 0}
-    - inputremap: {r: 1, g: 1, b: 1, a: 1}
-    - outminmax: {r: 0, g: 0.16, b: 0, a: 0}
+    - inputremap: {r: 1, g: 0, b: 0, a: 0}
+    - outminmax: {r: 0, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []

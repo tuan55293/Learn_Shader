@@ -1,9 +1,9 @@
-Shader"Unlit/Test"
+Shader "Unlit/2D_water_frag"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
-        _MainTex1 ("Texture", 2D) = "white" {}
+        _MainTexx ("Texture", 2D) = "white" {}
+        _MainTexx1 ("Texture1", 2D) = "white" {}
 
         inputremap ("inputremap",vector) = (1,1,1,1)
         inminmax ("inminmax",vector) = (1,1,1,1)
@@ -32,18 +32,15 @@ Shader"Unlit/Test"
                 float2 uv : TEXCOORD0;
                 float2 uv1 : TEXCOORD2;
                 float4 vertex : SV_POSITION;
-            };           
+            };
 
-
-            sampler2D _MainTex;
-            sampler2D _MainTex1;
-            float4 _MainTex_ST;
-            float4 _MainTex1_ST;
-            
-            
+            sampler2D _MainTexx;
+            sampler2D _MainTexx1;
             float4 inputremap;
             float2 inminmax;
             float2 outminmax;
+            float4 _MainTexx_ST;
+
 
             void Remap(float4 In, float2 InMinMax, float2 OutMinMax, out float4 Out)
             {
@@ -53,28 +50,22 @@ Shader"Unlit/Test"
             v2f vert (appdata v)
             {
                 v2f o;
-                
-                float4 Outeffect;
-                float4 colorTex1;
-                //float4 UVforTexlod;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv; //TRANSFORM_TEX(v.uv, _MainTex);
-                o.uv1 = v.uv/10;
-                o.uv1.y += _Time.y/5;
-                Remap(inputremap,inminmax,outminmax,Outeffect);
-                float4 UVforTexlod = {o.uv1.x,o.uv1.y,0,0};
-                colorTex1 = tex2Dlod(_MainTex1,UVforTexlod);
-
-                o.uv.x += Outeffect * colorTex1.x;
-                o.uv.y += 1;
-                //o.uv1.x += _Time.y;
+                o.uv = TRANSFORM_TEX(v.uv, _MainTexx);
+                o.uv1 = v.uv;
                 return o;
             }
 
-            float4 frag (v2f i) : SV_Target
+            fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-                float4 col = tex2D(_MainTex, i.uv);
+                float4 Outeffect;
+                float2 colorTex1;
+                i.uv1.x += _Time.y/10;
+                float2 UVforTexlod = i.uv1;
+                Remap(inputremap,inminmax,outminmax,Outeffect);
+                colorTex1 = tex2D(_MainTexx1,UVforTexlod);
+                i.uv.x += Outeffect * colorTex1.x;
+                fixed4 col = tex2D(_MainTexx, i.uv);
                 return col;
             }
             ENDCG
