@@ -16,11 +16,17 @@ Shader "Unlit/2D_water_frag"
 
         Pass
         {
+<<<<<<< Updated upstream
             Cull off
 
             Ztest Off
 
             Zwrite Off
+=======
+        ZTest Off
+        ZWrite Off
+        Cull Off
+>>>>>>> Stashed changes
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -70,6 +76,7 @@ Shader "Unlit/2D_water_frag"
                 Remap(inputremap,inminmax,outminmax,Outeffect);
                 colorTex1 = tex2D(_MainTexx1,UVforTexlod);
                 i.uv.x += Outeffect * colorTex1.x;
+                i.uv.y *=-1;
                 fixed4 col = tex2D(_MainTexx, i.uv);
                 return col;
             }
