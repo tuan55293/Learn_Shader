@@ -62,7 +62,7 @@ Shader "Unlit/Mixtexture"
 
                 float4 pattern = tex2D(_Pattern,i.uv);
                 float4 moss = tex2D(_MainTex, projectXZ);
-                float4 rock = tex2D(_RockTex, i.uv);
+                float4 rock = tex2D(_RockTex, projectXZ);
                 float4 maintex = lerp(rock,moss,pattern);
                 return maintex;
             }
