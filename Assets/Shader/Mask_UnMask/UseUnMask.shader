@@ -18,10 +18,11 @@
             Blend SrcAlpha OneMinusSrcAlpha
             //Kiểm tra stencil
             Stencil{
-                ref 1 //Số tham chiếu
+                ref 3 //Số tham chiếu
                 comp Equal //Điều kiện tham chiếu, chỉ những pixel thỏa mãn điều kiện mới được thực hiện những bước tiếp theo để render lên màn hình.
                 pass Keep //Nếu vượt qua điều kiện tham chiếu thì thực hiện phương thức này cho bộ đệm stencil, ở đây là vẫn giữ nguyên giá trị bộ đệm.(không phải giữ lại pixel)
                 ReadMask 3
+                WriteMask 0
             }
 
             CGPROGRAM
@@ -56,8 +57,8 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                return col;
-            }
+                return float4(1,0,0,1);
+}
             ENDCG
         }
     }

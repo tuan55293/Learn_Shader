@@ -16,17 +16,15 @@ Shader "Unlit/2D_water_frag"
 
         Pass
         {
-<<<<<<< Updated upstream
             Cull off
 
             Ztest Off
 
             Zwrite Off
-=======
+
         ZTest Off
         ZWrite Off
         Cull Off
->>>>>>> Stashed changes
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag

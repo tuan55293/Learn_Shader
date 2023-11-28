@@ -1,4 +1,4 @@
-﻿Shader "Unlit/MaskCustom"
+﻿Shader "Unlit/MaskCustom 1"
 {
     //Shader này là một mặt nạ
     Properties
@@ -18,8 +18,10 @@
             Blend SrcAlpha OneMinusSrcAlpha
             // Tạo mask và ghi đè tất cả pixel của obj vào bộ đện stencil
             Stencil{
-                ref 1
-                comp Always
+                ref 3
+                comp Equal
+                WriteMask 3
+                ReadMask 1
                 pass replace
             }
             CGPROGRAM
