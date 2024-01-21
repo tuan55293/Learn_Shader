@@ -16,14 +16,8 @@ Shader "Unlit/2D_water_frag"
 
         Pass
         {
-            Cull off
-
-            Ztest Off
-
-            Zwrite Off
-
-        ZTest Off
-        ZWrite Off
+        //ZTest Off
+        //ZWrite Off
         Cull Off
             CGPROGRAM
             #pragma vertex vert

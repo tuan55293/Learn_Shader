@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unlit_2D_Water_Reflec
+  m_Name: Unlit_2D_water_frag
   m_Shader: {fileID: 4800000, guid: 187d07f11e0f6b542b70131984543048, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -15,38 +15,26 @@ Material:
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 1
-<<<<<<< Updated upstream
-  m_CustomRenderQueue: 3000
-=======
-  m_CustomRenderQueue: 1
->>>>>>> Stashed changes
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTex1:
-        m_Texture: {fileID: 2800000, guid: 72e3bd13fe2ed9f42a8ef611f43fa5d6, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTexx:
-        m_Texture: {fileID: 8400000, guid: 104c6491851bbf0459b8dbc6ba5bff84, type: 2}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: e6d1982c41dafe449854494add89d275, type: 3}
+        m_Scale: {x: 1, y: -1}
         m_Offset: {x: 0, y: 0}
     - _MainTexx1:
-        m_Texture: {fileID: 2800000, guid: 72e3bd13fe2ed9f42a8ef611f43fa5d6, type: 3}
+        m_Texture: {fileID: 2800000, guid: f9b5ee0b137d847458536b7153bdd669, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats: []
     m_Colors:
     - inminmax: {r: 0, g: 1, b: 1, a: 1}
-    - inputremap: {r: 1, g: 1, b: 1, a: 1}
-<<<<<<< Updated upstream
-    - outminmax: {r: 0, g: 0.05, b: 1, a: 1}
-=======
-    - outminmax: {r: 0, g: -0.32, b: 1, a: 1}
->>>>>>> Stashed changes
+    - inputremap: {r: 0.5, g: 1, b: 1, a: 1}
+    - outminmax: {r: 0.07, g: 0.12, b: 1, a: 1}
   m_BuildTextureStacks: []
