@@ -6,6 +6,11 @@
         _Col2("Cor2",color) = (0,0,0,1)
         _Range1("_Range1",Range(0,1))  = 0
         _Range2("_Range2",Range(0,1))  = 0
+
+        _CurrentChoose("CurrentChoose",Range(0,1)) = 0
+
+
+        
     }
     SubShader
     {
@@ -23,8 +28,10 @@
 
             float4 _Col1;
             float4 _Col2;
+            float4 _CurrentCol;
             float _Range1;
             float _Range2;
+            float _CurrentChoose;
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -56,13 +63,11 @@
                 return (v-a) / (b-a);
             }
 
-            //float2 t = {0,1};
-            //float2 a : TEXCOORD = float2(0,1);
             v2f vert (appdata v,data d,data2 dd)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.normal = v.normal;//mul(UNITY_MATRIX_M,v.normal);
+                o.normal = v.normal;
                 o.uv= v.uv;
                 return o;
             }
