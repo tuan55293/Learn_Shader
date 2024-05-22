@@ -1,4 +1,4 @@
-Shader "Unlit/NewUnlitShader"
+Shader "Unlit/2"
 {
     Properties
     {
@@ -6,15 +6,15 @@ Shader "Unlit/NewUnlitShader"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType" = "Opaque" "Queue"="Geometry-100"}
+        //ZTest Always
+        //ZWrite Off
         LOD 100
-
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
