@@ -1,0 +1,37 @@
+
+#pragma kernel CSMain
+
+struct Data1
+{
+    float value;
+};
+
+RWStructuredBuffer<Data1> Result;
+
+[numthreads(1000, 1, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+
+    int index = id.x;
+    for (int j = 0; j < 50000; j++)
+    {
+        Result[index].value += 1;
+    }
+
+    
+
+
+    //for (int i = 0; i < 10000; i++)
+    //{
+        
+    //    if (id.x == i)
+    //    {
+            
+    //        for (int j = 0; j < 50000; j++)
+    //        {
+    //            Result[i].value += 1;
+    //        }
+    //    }
+    //}
+
+}
