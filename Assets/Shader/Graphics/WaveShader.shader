@@ -100,8 +100,7 @@ Shader "Custom/WaveShader" {
 
                     float wave = cos((lengthvector  - _Time.y * _Freq   ) * TAU * 5)  * 0.5 + 0.5;
 
-                    //màu sẽ nhật dần từ trong ra ngoài, cụ thể hơn là những khu vực ở xa tâm nhất sẽ có kết quả là 0 và sẽ có màu đen thay vì
-                    các sóng sẽ đều nhau
+                    //màu sẽ nhật dần từ trong ra ngoài, cụ thể hơn là những khu vực ở xa tâm nhất sẽ có kết quả là 0 và sẽ có màu đen thay vì các sóng sẽ đều nhau
                     wave *= 1-lengthvector;
                     return wave;
                 }
