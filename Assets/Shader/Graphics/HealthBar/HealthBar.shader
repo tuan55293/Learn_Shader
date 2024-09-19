@@ -7,11 +7,14 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
         LOD 100
 
         Pass
         {
+            ZWrite Off
+            Blend SrcAlpha OneMinusSrcAlpha
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -49,14 +52,14 @@
 
             float4 frag (v2f i) : SV_Target
             {
-                //float4 col = tex2D(_MainTex, i.uv);
-                float tHealthColor = saturate(InverseLerp(0.2,0.8,_Health));
-                float3 bgColor = (0,0,0);
-                float3 heathbarColor = lerp(float3(1,0,0),float3(0,1,0),tHealthColor);
+                float3 healthbarColor = tex2D(_MainTex,float2(_Health,i.uv.y));
                 float healthbarMask = i.uv < _Health;
 
-                float3 outColor = lerp(bgColor,heathbarColor,healthbarMask);
-                return float4(outColor,1);
+                float flash = cos(_Time.y * 10) * 0.4 + 1;
+
+                healthbarColor *= flash;
+
+                return float4(healthbarColor.rgb * healthbarMask, 1);
             }
             ENDCG
         }
