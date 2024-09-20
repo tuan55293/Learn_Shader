@@ -55,9 +55,11 @@
                 float3 healthbarColor = tex2D(_MainTex,float2(_Health,i.uv.y));
                 float healthbarMask = i.uv < _Health;
 
-                float flash = cos(_Time.y * 10) * 0.4 + 1;
+                if(_Health < 0.3){
+                    float flash = cos(_Time.y * 10) * 0.4 + 1;
+                    healthbarColor *= flash;
+                }
 
-                healthbarColor *= flash;
 
                 return float4(healthbarColor.rgb * healthbarMask, 1);
             }
