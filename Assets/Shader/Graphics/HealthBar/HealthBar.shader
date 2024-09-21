@@ -4,6 +4,7 @@
     {
         [NoScaleOffset]_MainTex ("Texture", 2D) = "white" {}
         _Health ("Health",Range(0,1)) = 1
+        _Threshold("Threshold",Range(1,2)) = 1
     }
     SubShader
     {
@@ -36,6 +37,7 @@
             sampler2D _MainTex;
 
             float _Health;
+            float _Threshold;
 
 
             v2f vert (appdata v)
@@ -52,6 +54,16 @@
 
             float4 frag (v2f i) : SV_Target
             {
+                // Rounded corner clipping
+                float2 coords = i.uv;
+                coords.x *=8;
+                float2 pointOnLineSeg = float2(clamp(coords.x,0.5,7.5),0.5);
+                float SDF = distance(coords,pointOnLineSeg) * 2 - _Threshold;
+                clip(-SDF);
+
+                //return float4(SDF.xxx,1);
+
+
                 float3 healthbarColor = tex2D(_MainTex,float2(_Health,i.uv.y));
                 float healthbarMask = i.uv < _Health;
 
