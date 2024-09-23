@@ -5,6 +5,7 @@
         [NoScaleOffset]_MainTex ("Texture", 2D) = "white" {}
         _Health ("Health",Range(0,1)) = 1
         _Threshold("Threshold",Range(1,2)) = 1
+        _BorderSize("Border Size",Range(0,0.5)) = 0.1
     }
     SubShader
     {
@@ -15,6 +16,7 @@
         {
             ZWrite Off
             Blend SrcAlpha OneMinusSrcAlpha
+            //Blend One One
 
             CGPROGRAM
             #pragma vertex vert
@@ -38,6 +40,7 @@
 
             float _Health;
             float _Threshold;
+            float _BorderSize;
 
 
             v2f vert (appdata v)
@@ -61,7 +64,14 @@
                 float SDF = distance(coords,pointOnLineSeg) * 2 - _Threshold;
                 clip(-SDF);
 
-                //return float4(SDF.xxx,1);
+                float borderSDF = SDF + _BorderSize;
+
+                float pd = fwidth(borderSDF); // screen space partial derivative
+
+                //float borderMask = step(0,-borderSDF);
+                float borderMask = 1- saturate(borderSDF / pd);
+
+                //return float4(borderMask.xxx,1);
 
 
                 float3 healthbarColor = tex2D(_MainTex,float2(_Health,i.uv.y));
@@ -73,7 +83,7 @@
                 }
 
 
-                return float4(healthbarColor.rgb * healthbarMask, 1);
+                return float4(healthbarColor.rgb * healthbarMask * borderMask, 1);
             }
             ENDCG
         }
