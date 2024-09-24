@@ -30,7 +30,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _BorderSize: 0.381
-    - _Health: 0.485
+    - _Health: 0.632
     - _Threshold: 1
     m_Colors: []
   m_BuildTextureStacks: []
