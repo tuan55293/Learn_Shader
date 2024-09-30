@@ -1,9 +1,9 @@
-Shader "Unlit/LitShaderr"
+﻿Shader "Unlit/LightingTest"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Gloss ("Gloss",float) = 1
+        _Gloss ("Gloss",Range(0,1)) = 0
         _Color("Color",Color) = (1,0,1,1)
     }
     SubShader
@@ -13,6 +13,7 @@ Shader "Unlit/LitShaderr"
 
         Pass
         {
+            //Blend SrcAlpha OneMinusSrcAlpha
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -37,7 +38,7 @@ Shader "Unlit/LitShaderr"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            float3 _Color;
+            float4 _Color;
             float _Gloss;
 
             v2f vert (appdata v)
@@ -50,9 +51,10 @@ Shader "Unlit/LitShaderr"
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            float4 frag (v2f i) : SV_Target
             {
-                //fixed4 col = tex2D(_MainTex, i.uv);
+                /* 
+                //Phong lighting...
 
                 // diffuseLighting
                 float3 N =normalize( i.normal);
@@ -63,16 +65,46 @@ Shader "Unlit/LitShaderr"
                 // specular lighting
 
                 float3 V = normalize(_WorldSpaceCameraPos - i.wPos);
+
+                // need for Phong lighting
                 float3 R = reflect(-L,N);
 
                 float3 specularLight = saturate(dot(V,R));
 
                 specularLight = pow(specularLight,_Gloss);
                 
-                return float4(specularLight,1);
+                return float4(diffuseLight*_Color.xyz + specularLight,1);
+
+                */
 
 
-                return float4(diffuseLight,1);
+                // Blinn-Phong lighting...
+                // diffuseLighting
+                float3 N = normalize( i.normal); //normal vector in plane
+                float3 L =_WorldSpaceLightPos0.xyz; // Dir light from plane to source light
+                float lambert = saturate(dot(L,N));
+                float3 diffuseLight = (lambert + 0.06) * _LightColor0.xyz ;
+
+
+                // specular lighting
+                float3 V = normalize(_WorldSpaceCameraPos - i.wPos);
+
+                float3 HalfVector = normalize(L+V);
+
+                float3 specularLight = saturate(dot(HalfVector,N)) * (lambert>0);
+
+                float specularExponent = exp2(_Gloss * 11) + 2;
+
+                specularLight = pow(specularLight,specularExponent) * _Gloss; // Nhân với _Gloss để khi Gloss bằng 0 thì sẽ không có hiện tượng bóng sáng mà sẽ là màu nguyên bản
+                specularLight *= _LightColor0.xyz;
+                
+
+                float fresnel = 0;//(1-dot(V,N))*(cos(_Time.y * 5) *0.5 + 0.5);
+
+
+                return float4(diffuseLight * _Color.xyz + specularLight + fresnel,_Color.w);
+
+                    
             }
             ENDCG
         }
