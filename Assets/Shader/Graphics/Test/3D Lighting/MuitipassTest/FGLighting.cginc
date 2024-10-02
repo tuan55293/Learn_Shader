@@ -40,9 +40,13 @@ float4 frag(v2f i) : SV_Target
     // Blinn-Phong lighting...
     // diffuseLighting
     float3 N = normalize(i.normal); //normal vector in plane
-    float3 L = _WorldSpaceLightPos0.xyz; // Dir light from plane to source light
+    //float3 L = _WorldSpaceLightPos0.xyz; // Dir light from plane to source light
+    float3 L = normalize(UnityWorldSpaceLightDir(i.wPos));
+    
+    float attenuation = LIGHT_ATTENUATION(i);
+    
     float lambert = saturate(dot(L, N));
-    float3 diffuseLight = (lambert + 0.06) * _LightColor0.xyz;
+    float3 diffuseLight = (lambert * attenuation) * _LightColor0.xyz;
 
 
     // specular lighting
@@ -50,8 +54,8 @@ float4 frag(v2f i) : SV_Target
     float3 HalfVector = normalize(L + V);
     float3 specularLight = saturate(dot(HalfVector, N)) * (lambert > 0);
     float specularExponent = exp2(_Gloss * 11) + 2;
-    specularLight = pow(specularLight, specularExponent) * _Gloss; // Nhân với _Gloss để khi Gloss bằng 0 thì sẽ không có hiện tượng bóng sáng mà sẽ là màu nguyên bản
+    specularLight = pow(specularLight, specularExponent) * _Gloss * attenuation; // Nhân với _Gloss để khi Gloss bằng 0 thì sẽ không có hiện tượng bóng sáng mà sẽ là màu nguyên bản
     specularLight *= _LightColor0.xyz;
     float fresnel = 0; //(1-dot(V,N))*(cos(_Time.y * 5) *0.5 + 0.5);
-    return float4(diffuseLight * _Color.xyz + specularLight + fresnel, _Color.w);               
+    return float4(diffuseLight * _Color + specularLight + fresnel, 1);               
 }
