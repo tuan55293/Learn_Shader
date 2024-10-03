@@ -6,14 +6,13 @@ public class ReplacementShaderr : MonoBehaviour
 {
     // Start is called before the first frame update
     public Shader S;
-    public Camera Cam;
-    void Start()
+    private void Start()
     {
-        
+        Debug.Log("Start");
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
