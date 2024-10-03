@@ -43,7 +43,7 @@ float4 frag(v2f i) : SV_Target
     //float3 L = _WorldSpaceLightPos0.xyz; // Dir light from plane to source light
     float3 L = normalize(UnityWorldSpaceLightDir(i.wPos));
     
-    float attenuation = LIGHT_ATTENUATION(i);
+    float attenuation =  LIGHT_ATTENUATION(i);
     
     float lambert = saturate(dot(L, N));
     float3 diffuseLight = (lambert * attenuation) * _LightColor0.xyz;
