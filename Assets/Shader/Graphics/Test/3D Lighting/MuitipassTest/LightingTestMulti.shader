@@ -2,7 +2,8 @@
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _Albedo ("Albedo", 2D) = "white" {}
+        [NoScaleOffset]_NormalMap ("Normal Map", 2D) = "bump"{}
         _Gloss ("Gloss",Range(0,1)) = 0
         _Color("Color",Color) = (1,0,1,1)
     }
