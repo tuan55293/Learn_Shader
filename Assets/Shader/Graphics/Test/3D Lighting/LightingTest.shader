@@ -2,7 +2,7 @@
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        MainTex ("Texture", 2D) = "white" {}
         _Gloss ("Gloss",Range(0,1)) = 0
         _Color("Color",Color) = (1,0,1,1)
     }
@@ -14,7 +14,7 @@
         Pass
         {
             //Blend SrcAlpha OneMinusSrcAlpha
-            CGPROGRAM
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
 
@@ -35,9 +35,10 @@
                 float3 normal : TEXCOORD1;
                 float3 wPos : TEXCOORD2;
             };
+            Texture2D MainTex;
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+            SamplerState  samplerMainTex;
+            float4 MainTex_ST;
             float4 _Color;
             float _Gloss;
 
@@ -45,7 +46,7 @@
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = TRANSFORM_TEX(v.uv, MainTex);
                 o.normal = UnityObjectToWorldNormal(v.normal);
                 o.wPos = mul(unity_ObjectToWorld, v.vertex);
                 return o;
@@ -83,6 +84,7 @@
                 float3 N = normalize( i.normal); //normal vector in plane
                 float3 L =_WorldSpaceLightPos0.xyz; // Dir light from plane to source light
                 float lambert = saturate(dot(L,N));
+                float3 texcol = MainTex.Sample(samplerMainTex,i.uv).xyz;
                 float3 diffuseLight = (lambert + 0.06) * _LightColor0.xyz ;
 
 
@@ -101,12 +103,12 @@
 
                 float fresnel = 0;//(1-dot(V,N))*(cos(_Time.y * 5) *0.5 + 0.5);
 
-
-                return float4(diffuseLight * _Color.xyz + specularLight + fresnel,_Color.w);
+                
+                return float4(diffuseLight * texcol * _Color.xyz + specularLight + fresnel,_Color.w);
 
                     
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }
