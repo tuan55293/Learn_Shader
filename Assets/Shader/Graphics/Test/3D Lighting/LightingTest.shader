@@ -5,6 +5,7 @@
         MainTex ("Texture", 2D) = "white" {}
         _Gloss ("Gloss",Range(0,1)) = 0
         _Color("Color",Color) = (1,0,1,1)
+        _ToonStrength("ToonStrength",Range(1,10)) = 5
     }
     SubShader
     {
@@ -41,6 +42,7 @@
             float4 MainTex_ST;
             float4 _Color;
             float _Gloss;
+            float _ToonStrength;
 
             v2f vert (appdata v)
             {
@@ -83,7 +85,8 @@
                 // diffuseLighting
                 float3 N = normalize( i.normal); //normal vector in plane
                 float3 L =_WorldSpaceLightPos0.xyz; // Dir light from plane to source light
-                float lambert = saturate(dot(L,N));
+                float lambert = saturate(floor(dot(L,N)*_ToonStrength)/_ToonStrength); //Toon shader;
+                //float lambert = saturate(dot(L,N));
                 float3 texcol = MainTex.Sample(samplerMainTex,i.uv).xyz;
                 float3 diffuseLight = (lambert + 0.06) * _LightColor0.xyz ;
 

@@ -1,7 +1,8 @@
 ﻿#include "UnityCG.cginc"
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
-struct appdata
+#pragma multi_compile_instancing
+struct appdata 
 {
     float4 vertex : POSITION;
     float2 uv : TEXCOORD0;
