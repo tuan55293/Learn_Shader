@@ -76,7 +76,7 @@ float4 frag(v2f i) : SV_Target
     // specular lighting
     float3 V = normalize(_WorldSpaceCameraPos - i.wPos);
     float3 HalfVector = normalize(L + V);
-    float3 specularLight = saturate(dot(HalfVector, N)) * (lambert > 0);
+    float specularLight = saturate(dot(HalfVector, N)) * (lambert > 0);
     float specularExponent = exp2(_Gloss * 11) + 2;
     specularLight = pow(specularLight, specularExponent) * _Gloss * attenuation; // Nhân với _Gloss để khi Gloss bằng 0 thì sẽ không có hiện tượng bóng sáng mà sẽ là màu nguyên bản
     specularLight *= _LightColor0.xyz;
