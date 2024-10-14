@@ -18,6 +18,7 @@ struct v2f
     float3 tangent : TEXCOORD2;
     float3 bitangent : TEXCOORD3;
     float3 wPos : TEXCOORD4;
+    LIGHTING_COORDS(5,6)
 };
 
 sampler2D _MainTex;
@@ -34,6 +35,8 @@ v2f vert(appdata v)
     o.tangent = UnityObjectToWorldDir(v.tangent.xyz);
     o.wPos = mul(unity_ObjectToWorld, v.vertex);
     o.wNormal = UnityObjectToWorldNormal(v.normal);
+    o.bitangent = cross(o.wNormal, o.wPos) * v.tangent.w;
+    TRANSFER_VERTEX_TO_FRAGMENT(o);
     return o;
 }
 
@@ -42,13 +45,14 @@ float4 frag(v2f i) : SV_Target
     float4 texCol = tex2D(_MainTex, i.uv);
 
     float3 N = normalize(i.wNormal);
-    float3 L = _WorldSpaceLightPos0.xyz;
+    float3 L = normalize(UnityWorldSpaceLightDir(i.wPos));
     float3 V = normalize(_WorldSpaceCameraPos - i.wPos);
     float3 HalfVector = normalize(L + V);
 
+    float attenuation = LIGHT_ATTENUATION(i);
+    
     float lambert = saturate(dot(L, N));
-
-    float3 diffuse = lambert * _LightColor0.xyz;
+    float3 diffuse = lambert * attenuation * _LightColor0.xyz;
 
     float3 specularLight = saturate(dot(N, HalfVector)) * (lambert > 0);
     float specularExponent = exp2(_Gloss * 10) + 2;

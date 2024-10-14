@@ -15,9 +15,21 @@ Shader "Unlit/MultiLight"
 
         Pass
         {
+            Tags {"LightMode" = "ForwardBase"}
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #include "LightingCustom.cginc"
+            ENDCG
+        }
+        Pass
+        {
+            Tags {"LightMode" = "ForwardAdd"}
+            Blend One One
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_fwdadd
             #include "LightingCustom.cginc"
             ENDCG
         }
