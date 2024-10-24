@@ -37,7 +37,6 @@ v2f vert(appdata v)
     o.wPos = mul(unity_ObjectToWorld, v.vertex); //Tọa độ đỉnh trong thế giới.
     o.tangent = UnityObjectToWorldDir(v.tangent.xyz);
     o.bitangent = cross(o.normal,o.tangent);
-    //o.bitangent = cross(o.tangent,o.normal);
     o.bitangent *= v.tangent.w * unity_WorldTransformParams.w;
     TRANSFER_VERTEX_TO_FRAGMENT(o)
     return o;
@@ -52,6 +51,7 @@ float4 frag(v2f i) : SV_Target
     float3 tangentSpaceNormal = UnpackNormal(tex2D(_NormalMap, i.uv));
 
     tangentSpaceNormal = lerp(float3(0,0,1), tangentSpaceNormal, _NormalIntensity);
+    
     
     float3x3 mtxTangToWorld = {
         i.tangent.x, i.bitangent.x, i.normal.x,

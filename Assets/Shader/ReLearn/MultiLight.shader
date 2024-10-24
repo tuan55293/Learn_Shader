@@ -3,7 +3,8 @@ Shader "Unlit/MultiLight"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _NormalMap("NormalMap",2D) = "bump"{}
+        [NoScaleOffset]_NormalMap("NormalMap",2D) = "bump"{}
+        _NormalIntensity("Normal Intensity",Range(0,1))=0
         _Gloss("Gloss",Range(0,1)) = 0.5
         _Color("Color",Color) = (1,1,1,1)
 
