@@ -41,8 +41,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Gloss: 0.5
-    - _NormalIntensity: 1
+    - _Gloss: 1
+    - _NormalIntensity: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _lightDir: {r: 0, g: 0, b: 1, a: 0}

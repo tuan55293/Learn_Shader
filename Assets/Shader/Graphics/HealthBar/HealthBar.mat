@@ -29,8 +29,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BorderSize: 0.381
-    - _Health: 0.632
+    - _BorderSize: 0.303
+    - _Health: 1
     - _Threshold: 1
     m_Colors: []
   m_BuildTextureStacks: []

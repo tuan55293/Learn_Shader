@@ -4,10 +4,11 @@ Shader "Unlit/2D_water_frag"
     {
         _MainTexx ("Texture", 2D) = "white" {}
         _MainTexx1 ("Texture1", 2D) = "white" {}
+        _StrengthNoise("Strength Noise",Range(0,1)) = 0.5
 
-        inputremap ("inputremap",vector) = (1,1,1,1)
-        inminmax ("inminmax",vector) = (1,1,1,1)
-        outminmax ("outminmax",vector) = (1,1,1,1)
+        //inputremap ("inputremap",vector) = (1,1,1,1)
+        //inminmax ("inminmax",vector) = (1,1,1,1)
+        //outminmax ("outminmax",vector) = (1,1,1,1)
     }
     SubShader
     {
@@ -17,7 +18,7 @@ Shader "Unlit/2D_water_frag"
         Pass
         {
         //ZTest Off
-        //ZWrite Off
+        ZWrite Off
         Cull Off
             CGPROGRAM
             #pragma vertex vert
@@ -39,6 +40,7 @@ Shader "Unlit/2D_water_frag"
 
             sampler2D _MainTexx;
             sampler2D _MainTexx1;
+            float _StrengthNoise;
             float4 inputremap;
             float2 inminmax;
             float2 outminmax;
@@ -61,13 +63,12 @@ Shader "Unlit/2D_water_frag"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float4 Outeffect;
+                float Outeffect = _StrengthNoise * 0.3;
                 float2 colorTex1;
                 i.uv1.x += _Time.y/10;
                 float2 UVforTexlod = i.uv1;
-                Remap(inputremap,inminmax,outminmax,Outeffect);
-                colorTex1 = tex2D(_MainTexx1,UVforTexlod);
-                i.uv.x += Outeffect * colorTex1.x;
+                colorTex1 = tex2D(_MainTexx1,UVforTexlod* 2 -1);
+                i.uv.x += Outeffect * (colorTex1.x * 1.5-0.35);
                 i.uv.y *=-1;
                 fixed4 col = tex2D(_MainTexx, i.uv);
                 return col;

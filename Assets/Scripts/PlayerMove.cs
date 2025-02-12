@@ -12,14 +12,12 @@ public class PlayerMove : MonoBehaviour
     float cosanglerad;
     void Start()
     {
-        anglerad = 90 * Mathf.Deg2Rad;
-        cosanglerad = Mathf.Round(MathF.Cos(anglerad *10000f))*0.0001f;
-        Debug.Log(cosanglerad);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        transform.Translate(transform.right * Time.deltaTime * 5 * Input.GetAxis("Horizontal"));
     }
 }
