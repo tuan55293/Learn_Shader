@@ -1,7 +1,6 @@
 ﻿#include "UnityCG.cginc"
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
-#pragma multi_compile_instancing
 struct appdata 
 {
     float4 vertex : POSITION;
@@ -38,18 +37,18 @@ v2f vert(appdata v)
     o.tangent = UnityObjectToWorldDir(v.tangent.xyz);
     o.bitangent = cross(o.normal,o.tangent);
     o.bitangent *= v.tangent.w * unity_WorldTransformParams.w;
-    TRANSFER_VERTEX_TO_FRAGMENT(o)
+    TRANSFER_VERTEX_TO_FRAGMENT(o);
     return o;
 }
 
 float4 frag(v2f i) : SV_Target
 {
-    float3 tex = tex2D(_Albedo, i.uv);
-    float3 surfaceColor = tex * _Color.rgb;
-
-
+    float4 tex = tex2D(_Albedo, i.uv);
+    //float3 surfaceColor = tex * _Color.rgb;
+    
+    
     float3 tangentSpaceNormal = UnpackNormal(tex2D(_NormalMap, i.uv));
-
+    
     tangentSpaceNormal = lerp(float3(0,0,1), tangentSpaceNormal, _NormalIntensity);
     
     
@@ -58,28 +57,29 @@ float4 frag(v2f i) : SV_Target
         i.tangent.y, i.bitangent.y, i.normal.y,
         i.tangent.z, i.bitangent.z, i.normal.z
     };
-
-    float3 N = mul(mtxTangToWorld,tangentSpaceNormal);
-
+    
+    float3 N = normalize(mul(mtxTangToWorld,tangentSpaceNormal));
+    
     // Blinn-Phong lighting...
     // diffuseLighting
     //float3 N = normalize(i.normal); //normal vector in plane
     //float3 L = _WorldSpaceLightPos0.xyz; // Dir light from plane to source light
     float3 L = normalize(UnityWorldSpaceLightDir(i.wPos));
-    
-    float attenuation =  LIGHT_ATTENUATION(i);
-    
-    float lambert = saturate(dot(L, N));
-    float3 diffuseLight = (lambert * attenuation) * _LightColor0.xyz;
-
-
-    // specular lighting
     float3 V = normalize(_WorldSpaceCameraPos - i.wPos);
     float3 HalfVector = normalize(L + V);
-    float specularLight = saturate(dot(HalfVector, N)) * (lambert > 0);
+    float attenuation =  LIGHT_ATTENUATION(i);
+    float lambert = saturate(dot(L, N));
+    float3 diffuseLight = lambert * attenuation * _LightColor0.xyz;
+    
+    
+    // specular lighting
+
+    // Specularlight cần được khởi tạo bằng vector3, vì đây là màu sắc của ánh sáng phản chiếu (sau đó nhân với cường độ), thế nên nếu khai báo là float thì sẽ bị thiếu kênh màu G và B.
+    float3 specularLight = saturate(dot(N, HalfVector)) * (lambert > 0);
     float specularExponent = exp2(_Gloss * 11) + 2;
     specularLight = pow(specularLight, specularExponent) * _Gloss * attenuation; // Nhân với _Gloss để khi Gloss bằng 0 thì sẽ không có hiện tượng bóng sáng mà sẽ là màu nguyên bản
     specularLight *= _LightColor0.xyz;
-    float fresnel = 0; //(1-dot(V,N))*(cos(_Time.y * 5) *0.5 + 0.5);
-    return float4(diffuseLight * surfaceColor + specularLight + fresnel, 1);               
+    //float fresnel = 0; //(1-dot(V,N))*(cos(_Time.y * 5) *0.5 + 0.5);
+    return float4(tex * diffuseLight * _Color + specularLight.xyz , 1);
+    
 }

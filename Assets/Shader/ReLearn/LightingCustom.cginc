@@ -33,7 +33,6 @@ v2f vert(appdata v)
     v2f o;
     o.vertex = UnityObjectToClipPos(v.vertex);
     o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-
     o.wPos = mul(unity_ObjectToWorld, v.vertex);
     o.wNormal = UnityObjectToWorldNormal(v.normal);
     o.tangent = UnityObjectToWorldDir(v.tangent.xyz);
@@ -58,8 +57,6 @@ float4 frag(v2f i) : SV_Target
     };
 
     float3 N = normalize(mul(matrixTangentSpace, TangentN));
-    
-    //float3 N = normalize(i.wNormal);
     float3 L = normalize(UnityWorldSpaceLightDir(i.wPos));
     float3 V = normalize(_WorldSpaceCameraPos - i.wPos);
     float3 HalfVector = normalize(L + V);
@@ -71,8 +68,7 @@ float4 frag(v2f i) : SV_Target
 
     float3 specularLight = saturate(dot(N, HalfVector)) * (lambert > 0);
     float specularExponent = exp2(_Gloss * 11) + 2;
-
-    specularLight = pow(specularLight, specularExponent) * _Gloss;
+    specularLight = pow(specularLight, specularExponent) * _Gloss* attenuation;
     specularLight *= _LightColor0.xyz;
 
     return float4(texCol * _Color * diffuse + specularLight, 1);
